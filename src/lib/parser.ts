@@ -70,13 +70,41 @@ export function createAliveCorEcgParser(): AliveCorEcgParser {
 
   const infoBlockParser = new Parser()
     .endianness('little')
-    .string('dateRecorded', { length: 32, stripNull: true })
-    .string('recordingUuid', { length: 40, stripNull: true })
-    .string('mobilePhoneUuid', { length: 44, stripNull: true })
-    .string('mobilePhoneModel', { length: 32, stripNull: true })
-    .string('recorderSoftware', { length: 32, stripNull: true })
-    .string('recorderHardware', { length: 32, stripNull: true })
-    .string('deviceData', { length: 52, stripNull: true });
+    .string('dateRecorded', {
+      length: 32,
+      stripNull: true,
+      formatter: trimString,
+    })
+    .string('recordingUuid', {
+      length: 40,
+      stripNull: true,
+      formatter: trimString,
+    })
+    .string('mobilePhoneUuid', {
+      length: 44,
+      stripNull: true,
+      formatter: trimString,
+    })
+    .string('mobilePhoneModel', {
+      length: 32,
+      stripNull: true,
+      formatter: trimString,
+    })
+    .string('recorderSoftware', {
+      length: 32,
+      stripNull: true,
+      formatter: trimString,
+    })
+    .string('recorderHardware', {
+      length: 32,
+      stripNull: true,
+      formatter: trimString,
+    })
+    .string('deviceData', {
+      length: 52,
+      stripNull: true,
+      formatter: trimString,
+    });
 
   const formatBlockParser = new Parser()
     .endianess('little')
@@ -172,15 +200,7 @@ export function createAliveCorEcgParser(): AliveCorEcgParser {
       if (!infoBlock) {
         throw new Error('No info block in AliveCor ECG file');
       }
-      const data = infoBlockParser.parse(infoBlock.contents) as AliveCorEcgInfo;
-      data.recordingUuid = data.recordingUuid.trim();
-      data.dateRecorded = data.dateRecorded.trim();
-      data.deviceData = data.deviceData.trim();
-      data.mobilePhoneModel = data.mobilePhoneModel.trim();
-      data.mobilePhoneUuid = data.mobilePhoneUuid.trim();
-      data.recorderHardware = data.recorderHardware.trim();
-      data.recorderSoftware = data.recorderSoftware.trim();
-      return data;
+      return infoBlockParser.parse(infoBlock.contents) as AliveCorEcgInfo;
     }
 
     function parseFormatBlock(): AliveCorEcgFormat {
@@ -210,5 +230,9 @@ export function createAliveCorEcgParser(): AliveCorEcgParser {
 
   function convertToBoolean(bit: number): boolean {
     return bit === 1;
+  }
+
+  function trimString(s: string): string {
+    return s.trim();
   }
 }
