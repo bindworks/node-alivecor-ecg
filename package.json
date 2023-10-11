@@ -1,5 +1,5 @@
 {
-  "name": "@bindworks/node-alivecor-ecg",
+  "name": "node-alivecor-ecg",
   "version": "1.6.2",
   "description": "Parser of AliveCor ECG File",
   "main": "build/main/index.js",
