@@ -1,6 +1,6 @@
 {
   "name": "@bindworks/node-alivecor-ecg",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "Parser of AliveCor ECG File",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
